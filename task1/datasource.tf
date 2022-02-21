@@ -1,6 +1,10 @@
 data "aws_vpcs" "listVPCs" {
 }
 
+output "vpcs" {
+  value = [for i in data.aws_vpcs.listVPCs.ids : i]
+}
+
 data "aws_subnets" "listSubnets" {
   filter {
     name   = "vpc-id"
