@@ -19,6 +19,18 @@ resource "aws_subnet" "nginx" {
   }
 }
 
+resource "aws_subnet" "db" {
+  count = length(var.db_regions)
+  vpc_id                  = aws_vpc.nginx.id
+  cidr_block              = var.db_cidr_block[count.index]
+  map_public_ip_on_launch = "true"
+  availability_zone       = var.db_regions[count.index]
+
+  tags = {
+    Name = "db"
+  }
+}
+
 resource "aws_internet_gateway" "nginx" {
   vpc_id = aws_vpc.nginx.id
 
